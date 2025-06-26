@@ -1,16 +1,22 @@
 from Canvas import Canvas
 import pygame
+from GA import *
 
 class Pong:
-    def __init__(self):
+    def __init__(self, drawn = True, net = None, maxFrames = 60):
         self.score = 0
-
-        self.canvas = Canvas()
+        self.frames_survived = 0
+        self.maxFrames = maxFrames
+        self.canvas = Canvas(drawn=drawn)
         self.paddle = None
         self.ball = None
-
+        self.drawn = drawn
+        self.net = net
         self.paddle_speed = 10
-        self.velocity = [8,8]
+
+        #ball
+        self.max_speed = 20
+        self.velocity = [20,20]
 
         self.WHITE = (255, 255, 255)
         self.BLACK = (0, 0, 0)
@@ -22,6 +28,7 @@ class Pong:
     def start(self):
         self.setup()
         self.game_loop()
+        return self.frames_survived, self.score
 
     def setup(self):
         self.ball = pygame.Rect(400, 300, 15, 15)
@@ -77,13 +84,19 @@ class Pong:
     def game_loop(self):
         self.running = True
         while self.running:
-            self.quitCheck()
-            self.controlsCheck()
+            if(self.drawn):
+                self.quitCheck()
+            GA(self, self.net)
+            #self.controlsCheck()
 
             self.boundary_detection()
             self.collision_detection()
 
             self.update()
-            self.draw()
-
+            if(self.drawn):
+                self.draw()
+            if(self.ball.left < 0 or self.frames_survived == self.maxFrames):
+                self.running = False
+            
+            self.frames_survived += 1
             self.canvas.clock.tick(60)

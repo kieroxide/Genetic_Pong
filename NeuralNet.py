@@ -4,6 +4,7 @@ class NeuralNet:
     def __init__(self, input_size, hidden_size, output_size):
         self.w1 = np.random.randn(hidden_size, input_size)
         self.w2 = np.random.randn(output_size, hidden_size)
+        self.fitness = 0
 
     def forward(self, inputs):
         z1 = np.dot(self.w1, inputs)         # Input to hidden
