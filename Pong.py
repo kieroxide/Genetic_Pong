@@ -3,11 +3,18 @@ import pygame
 from GA import *
 
 class Pong:
-    def __init__(self, drawn = True, net = None, maxFrames = 60):
+    def __init__(self, drawn = True, net = None, maxFrames = 500):
+        self.WIDTH = 600
+        self.HEIGHT = 600
+        
         self.score = 0
         self.frames_survived = 0
         self.maxFrames = maxFrames
-        self.canvas = Canvas(drawn=drawn)
+        self.WHITE = (255, 255, 255)
+        self.BLACK = (0, 0, 0)
+        if(drawn):
+            self.canvas = Canvas(drawn=drawn, width=self.WIDTH, height=self.HEIGHT)
+            self.score_text = self.canvas.font.render(f"Score: {self.score}", True, self.WHITE)
         self.paddle = None
         self.ball = None
         self.drawn = drawn
@@ -15,13 +22,10 @@ class Pong:
         self.paddle_speed = 10
 
         #ball
-        self.max_speed = 20
-        self.velocity = [20,20]
+        self.max_speed = 8
+        self.velocity = [8,8]
 
-        self.WHITE = (255, 255, 255)
-        self.BLACK = (0, 0, 0)
 
-        self.score_text = self.canvas.font.render(f"Score: {self.score}", True, self.WHITE)
 
         self.running = True
     
@@ -58,13 +62,14 @@ class Pong:
         if(self.paddle.colliderect(self.ball)):
             self.ball.left = self.paddle.right
             self.velocity[0] = -self.velocity[0]
-            self.score += 1
-            self.score_text = self.canvas.font.render(f"Score: {self.score}", True, self.WHITE)
+            self.score += 5
+            if self.drawn:
+                self.score_text = self.canvas.font.render(f"Score: {self.score}", True, self.WHITE)
     
     def boundary_detection(self):
-        if(self.ball.top < 0 or self.ball.bottom > self.canvas.HEIGHT):
+        if(self.ball.top < 0 or self.ball.bottom > self.HEIGHT):
             self.velocity[1] = -self.velocity[1]
-        if(self.ball.left < 0 or self.ball.right > self.canvas.WIDTH):
+        if(self.ball.left < 0 or self.ball.right > self.WIDTH):
             self.velocity[0] = -self.velocity[0]
     
     def update(self):
@@ -95,8 +100,11 @@ class Pong:
             self.update()
             if(self.drawn):
                 self.draw()
-            if(self.ball.left < 0 or self.frames_survived == self.maxFrames):
+            if(self.frames_survived == self.maxFrames):
                 self.running = False
-            
+            if(self.ball.left <= 0):
+                self.score -= 20
+                self.running = False
             self.frames_survived += 1
-            self.canvas.clock.tick(60)
+            if(self.drawn):
+                self.canvas.clock.tick(60)
