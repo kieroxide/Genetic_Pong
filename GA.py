@@ -2,10 +2,14 @@ import numpy as np
 from NeuralNet import NeuralNet
 
 def GA(pong, net):
+    #normalized inputs
     inputs = np.array([
-        [pong.ball.y / pong.HEIGHT],       
-        [pong.velocity[1] / pong.max_speed], 
-        [pong.paddle.y / pong.HEIGHT]
+        [pong.ball.centerx / pong.WIDTH],
+        [pong.ball.centery / pong.HEIGHT],
+        [pong.velocity[0] / pong.max_speed],
+        [pong.velocity[1] / pong.max_speed],
+        [pong.paddle.centery / pong.HEIGHT],
+        [(pong.ball.centery - pong.paddle.centery) / pong.HEIGHT]
     ])
 
     output = net.forward(inputs)  # Output between 0 and 

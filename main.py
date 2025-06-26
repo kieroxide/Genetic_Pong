@@ -5,10 +5,10 @@ import random
 import multiprocessing
 
 def main():
-    MAX_GENERATIONS = 200
-    POP_SIZE = 50
+    MAX_GENERATIONS = 40
+    POP_SIZE = 500
     PARENT_SIZE = round(POP_SIZE * 0.3)
-    population = [NeuralNet(3, 8, 1) for _ in range(POP_SIZE)]
+    population = [NeuralNet(6, 16, 1) for _ in range(POP_SIZE)]
     best = population[0]
     for gen in range(MAX_GENERATIONS):
         print(f"Generation: {gen}")
@@ -46,6 +46,7 @@ def crossover(parent1, parent2):
 def mutate(net, mutation_rate=0.1):
     net.w1 += np.random.randn(*net.w1.shape) * mutation_rate
     net.w2 += np.random.randn(*net.w2.shape) * mutation_rate
+
 def selectBest(population):
     population.sort(key=lambda net: net.fitness, reverse=True)
 

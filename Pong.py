@@ -1,6 +1,7 @@
 from Canvas import Canvas
 import pygame
 from GA import *
+import random
 
 class Pong:
     def __init__(self, drawn = True, net = None, maxFrames = 500):
@@ -36,6 +37,10 @@ class Pong:
 
     def setup(self):
         self.ball = pygame.Rect(400, 300, 15, 15)
+        self.ball.x = random.randint(300, 500)
+        self.ball.y = random.randint(100, 500)
+        self.velocity = [random.randint(0,20), random.randint(0,20)]
+
         self.paddle = pygame.Rect(30, 200, 10, 100)
 
     def quitCheck(self):
