@@ -5,9 +5,9 @@ import random
 import multiprocessing
 
 def main():
-    MAX_GENERATIONS = 400
-    POP_SIZE = 100
-    PARENT_SIZE = round(POP_SIZE * 0.3)
+    MAX_GENERATIONS = 10
+    POP_SIZE = 1000
+    PARENT_SIZE = round(POP_SIZE * 0.1)
     population = [NeuralNet(6, 16, 1) for _ in range(POP_SIZE)]
     best = population[0]
     for gen in range(MAX_GENERATIONS):

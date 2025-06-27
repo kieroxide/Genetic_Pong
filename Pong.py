@@ -2,6 +2,7 @@ from Canvas import Canvas
 import pygame
 from GA import *
 import random
+import math
 
 class Pong:
     def __init__(self, drawn = True, net = None, maxFrames = 500):
@@ -24,7 +25,7 @@ class Pong:
 
         #ball
         self.max_speed = 8
-        self.velocity = [8,8]
+        self.velocity = [6,3]
 
 
 
@@ -39,7 +40,10 @@ class Pong:
         self.ball = pygame.Rect(400, 300, 15, 15)
         self.ball.x = random.randint(300, 500)
         self.ball.y = random.randint(100, 500)
-        self.velocity = [random.randint(10,20), random.randint(-3, 3)]
+
+        angle = random.choice([45, 135, 225, 315])
+        r = math.radians(angle)
+        self.velocity = [self.max_speed * math.cos(r), self.max_speed * math.sin(r)]
 
         self.paddle = pygame.Rect(30, 200, 10, 100)
 
