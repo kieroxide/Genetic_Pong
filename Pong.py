@@ -5,10 +5,10 @@ import random
 import math
 
 class Pong:
-    def __init__(self, drawn = True, net = None, maxFrames = 500):
+    def __init__(self, drawn = True, net = None, maxFrames = 500, gen = None):
         self.WIDTH = 600
         self.HEIGHT = 600
-        
+        self.gen = gen
         self.score = 0
         self.frames_survived = 0
         self.maxFrames = maxFrames
@@ -17,14 +17,15 @@ class Pong:
         if(drawn):
             self.canvas = Canvas(drawn=drawn, width=self.WIDTH, height=self.HEIGHT)
             self.score_text = self.canvas.font.render(f"Score: {self.score}", True, self.WHITE)
+            self.gen_text = self.canvas.font.render(f"Generation: {self.gen}", True, self.WHITE)
         self.paddle = None
         self.ball = None
         self.drawn = drawn
         self.net = net
-        self.paddle_speed = 30
+        self.paddle_speed = 8
 
         #ball
-        self.max_speed = 8
+        self.max_speed = 20
         self.velocity = [6,3]
 
 
@@ -41,7 +42,7 @@ class Pong:
         self.ball.x = random.randint(300, 500)
         self.ball.y = random.randint(100, 500)
 
-        angle = random.choice([45, 135, 225, 315])
+        angle = random.choice([45, 315])
         r = math.radians(angle)
         self.velocity = [self.max_speed * math.cos(r), self.max_speed * math.sin(r)]
 
@@ -88,7 +89,8 @@ class Pong:
     def draw(self):
         #Clears, Draws objects, then updates display
         self.canvas.screen.fill(self.BLACK)
-        self.canvas.screen.blit(self.score_text,(self.canvas.WIDTH/2 , 20))
+        self.canvas.screen.blit(self.score_text,(self.canvas.WIDTH/2 , 10))
+        self.canvas.screen.blit(self.gen_text,(self.canvas.WIDTH/2 , 40))
 
         pygame.draw.rect(self.canvas.screen, self.WHITE, self.paddle)
         pygame.draw.rect(self.canvas.screen, self.WHITE, self.ball)

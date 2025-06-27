@@ -13,9 +13,9 @@ def GA(pong, net):
     ])
 
     output = net.forward(inputs)  # Output between 0 and 
-    if(output < 0.50):
+    if(output < 0.4):
         pong.paddle.y += pong.paddle_speed
-    else:
+    elif(output > 0.6):
         pong.paddle.y -= pong.paddle_speed
     if(pong.paddle.top < 0) : pong.paddle.top = 0
     if(pong.paddle.bottom > pong.HEIGHT) : pong.paddle.bottom = pong.HEIGHT

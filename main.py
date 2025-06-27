@@ -5,8 +5,8 @@ import random
 import multiprocessing
 
 
-MUTATION_RATE = 0.1
-NEURON_SIZE = 1
+MUTATION_RATE = 0.3
+NEURON_SIZE = 8
 SCORE_WEIGHT = 20
 MAX_FRAMES = 500
 
@@ -19,24 +19,27 @@ def main():
     #NeuralNet(input_size, Hidden_Size, Output_Size)
     population = [NeuralNet(6, NEURON_SIZE, 1) for _ in range(POP_SIZE)]
 
-    best_performer = simulate_generations(MAX_GENERATIONS, POP_SIZE, PARENT_SIZE, population)
+    best_performers_per_gen = simulate_generations(MAX_GENERATIONS, POP_SIZE, PARENT_SIZE, population)
     
-    #Display best performer game
-    pong = Pong(drawn=True, net=best_performer, maxFrames=float('inf'))
-    pong.start()
+    #Display best performers games
+    for performer, gen in best_performers_per_gen:
+        pong = Pong(drawn=True, net=performer, maxFrames=float('inf'), gen=gen)
+        pong.start()
 
 def simulate_generations(MAX_GENERATIONS, POP_SIZE, PARENT_SIZE, population):
+    best_performers_per_gen = []
     for gen in range(MAX_GENERATIONS):
         print(f"Generation: {gen}")
         #Simulates generation and returns top performers
         parents = rank_generation(population, PARENT_SIZE)
         best_performer = parents[0]
+        best_performers_per_gen.append((best_performer, gen + 1))
         #Repopulates with parents, mutates to avoid homogenity
         children = repopulate(POP_SIZE, parents)
         #Joins them both to create the next generation
         population = parents + children
         #Best performer to watch after all generations done
-    return best_performer
+    return best_performers_per_gen
 
 def repopulate(POP_SIZE, parents):
     children = []
