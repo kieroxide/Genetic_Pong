@@ -1,6 +1,6 @@
 from Canvas import Canvas
 import pygame
-from GA import *
+from ai_controls import *
 import random
 import math
 
@@ -72,6 +72,20 @@ class Pong:
         if(self.paddle.colliderect(self.ball)):
             self.ball.left = self.paddle.right
             self.velocity[0] = -self.velocity[0]
+
+            max_bounce_angle = math.radians(75)  # max angle from horizontal
+            hit_pos = (self.ball.centery - self.paddle.centery) / (self.paddle.height / 2)
+            speed = math.hypot(*self.velocity)
+
+            # Clamp hit_pos to -1..1
+            hit_pos = max(-1, min(1, hit_pos))
+
+            # Calculate new angle: 0 is straight right, positive is upward
+            angle = hit_pos * max_bounce_angle
+
+            # Update velocities with new angle, preserving speed
+            self.velocity[0] = speed * math.cos(angle)
+            self.velocity[1] = speed * math.sin(angle)
             self.score += 5
             if self.drawn:
                 self.score_text = self.canvas.font.render(f"Score: {self.score}", True, self.WHITE)
