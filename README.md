@@ -13,7 +13,7 @@ The program evolves a population of neural networks over multiple generations, t
 3. **Selection**: Top 10% become parents for the next generation
 4. **Reproduction**: Parents create offspring through crossover (weight averaging)
 5. **Mutation**: Random noise is added to prevent stagnation
-6. **Evolution**: Process repeats for 100 generations
+6. **Evolution**: Process repeats for 20 generations
 
 ## 🏗️ Architecture
 
@@ -86,6 +86,6 @@ Genetic_Pong/
 - **Genetic Algorithm**: Tournament selection with elitism
 - **Crossover**: Uniform weight averaging between parents
 - **Mutation**: Gaussian noise addition to all weights
-- **Fitness**: `score × 20 + survival_frames`
+- **Fitness**: `score × 10 + survival_frames`
 
 Built with Python, NumPy, and Pygame.

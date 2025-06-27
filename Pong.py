@@ -27,12 +27,12 @@ class Pong:
         self.ball = None
         self.drawn = drawn
         self.net = net
-        self.paddle_speed = 5
 
         #ball
-        self.max_speed = 15
+        self.max_speed = 10
         self.velocity = [6,3]
 
+        self.paddle_speed = self.max_speed * 0.5
 
 
         self.running = True
@@ -83,7 +83,7 @@ class Pong:
             self.ball.left = self.paddle.right
             self.velocity[0] = -self.velocity[0]
 
-            max_bounce_angle = math.radians(75)  # max angle from horizontal
+            max_bounce_angle = math.radians(45)  # max angle from horizontal
             hit_pos = (self.ball.centery - self.paddle.centery) / (self.paddle.height / 2)
             speed = math.hypot(*self.velocity)
 
@@ -92,6 +92,8 @@ class Pong:
 
             # Calculate new angle: 0 is straight right, positive is upward
             angle = hit_pos * max_bounce_angle
+            if abs(angle) < math.radians(5):  # or even 10
+                angle = math.copysign(math.radians(10), angle if angle != 0 else random.choice([-1, 1]))
 
             # Update velocities with new angle, preserving speed
             self.velocity[0] = speed * math.cos(angle)

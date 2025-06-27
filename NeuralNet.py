@@ -5,7 +5,7 @@ import numpy as np
 class NeuralNet:
     """2-layer neural network with genetic algorithm operations."""
     
-    def __init__(self, input_size, hidden_size, output_size):
+    def __init__(self, input_size, hidden_size, output_size, MUTATION_RATE):
         """Initialize network with random weights and biases."""
         self.w1 = np.random.randn(hidden_size, input_size)
         self.w2 = np.random.randn(output_size, hidden_size)
@@ -14,7 +14,7 @@ class NeuralNet:
         self.b2 = np.random.randn(output_size)    
 
         self.fitness = 0
-        self.MUTATION_RATE = 0.05
+        self.MUTATION_RATE = MUTATION_RATE
 
     def forward(self, inputs):
         """Forward pass through network."""
@@ -26,7 +26,7 @@ class NeuralNet:
     
     def crossover(self, other):
         """Create child network by averaging weights with another network."""
-        child = NeuralNet(self.w1.shape[1], self.w1.shape[0], self.w2.shape[0])
+        child = NeuralNet(self.w1.shape[1], self.w1.shape[0], self.w2.shape[0], self.MUTATION_RATE*0.95)
         child.w1 = (self.w1 + other.w1) / 2
         child.b1 = (self.b1 + other.b1) / 2
         child.w2 = (self.w2 + other.w2) / 2
