@@ -5,8 +5,8 @@ import random
 import multiprocessing
 
 def main():
-    MAX_GENERATIONS = 40
-    POP_SIZE = 500
+    MAX_GENERATIONS = 400
+    POP_SIZE = 100
     PARENT_SIZE = round(POP_SIZE * 0.3)
     population = [NeuralNet(6, 16, 1) for _ in range(POP_SIZE)]
     best = population[0]
@@ -29,9 +29,9 @@ def main():
     pong.start()
 
 def evaluate_net(net):
-    pong = Pong(drawn=False, net=net, maxFrames=500)
+    pong = Pong(drawn=True, net=net, maxFrames=500)
     frames, score = pong.start()
-    net.fitness = score
+    net.fitness = score*20 + frames
     return net
 
 def crossover(parent1, parent2):

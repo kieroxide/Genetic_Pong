@@ -20,7 +20,7 @@ class Pong:
         self.ball = None
         self.drawn = drawn
         self.net = net
-        self.paddle_speed = 10
+        self.paddle_speed = 30
 
         #ball
         self.max_speed = 8
@@ -39,7 +39,7 @@ class Pong:
         self.ball = pygame.Rect(400, 300, 15, 15)
         self.ball.x = random.randint(300, 500)
         self.ball.y = random.randint(100, 500)
-        self.velocity = [random.randint(0,20), random.randint(0,20)]
+        self.velocity = [random.randint(10,20), random.randint(-3, 3)]
 
         self.paddle = pygame.Rect(30, 200, 10, 100)
 
