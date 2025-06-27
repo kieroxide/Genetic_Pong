@@ -1,3 +1,5 @@
+"""Pong game implementation for AI training."""
+
 from Canvas import Canvas
 import pygame
 from ai_controls import *
@@ -5,7 +7,10 @@ import random
 import math
 
 class Pong:
+    """Pong game with AI paddle control."""
+    
     def __init__(self, drawn = True, net = None, maxFrames = 500, gen = None):
+        """Initialize Pong game with optional visualization."""
         self.WIDTH = 600
         self.HEIGHT = 600
         self.gen = gen
@@ -22,10 +27,10 @@ class Pong:
         self.ball = None
         self.drawn = drawn
         self.net = net
-        self.paddle_speed = 8
+        self.paddle_speed = 5
 
         #ball
-        self.max_speed = 20
+        self.max_speed = 15
         self.velocity = [6,3]
 
 
@@ -33,11 +38,13 @@ class Pong:
         self.running = True
     
     def start(self):
+        """Start game and return survival time and score."""
         self.setup()
         self.game_loop()
         return self.frames_survived, self.score
 
     def setup(self):
+        """Initialize ball and paddle positions."""
         self.ball = pygame.Rect(400, 300, 15, 15)
         self.ball.x = random.randint(300, 500)
         self.ball.y = random.randint(100, 500)
@@ -49,12 +56,14 @@ class Pong:
         self.paddle = pygame.Rect(30, 200, 10, 100)
 
     def quitCheck(self):
+        """Check for quit events."""
         #Allows to quit using window
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
     
     def controlsCheck(self):
+        """Handle manual paddle controls (unused in AI mode)."""
         keys = pygame.key.get_pressed()
 
         if keys[pygame.K_w]:
@@ -69,6 +78,7 @@ class Pong:
             self.paddle.bottom = 600
 
     def collision_detection(self):
+        """Handle ball-paddle collisions with realistic physics."""
         if(self.paddle.colliderect(self.ball)):
             self.ball.left = self.paddle.right
             self.velocity[0] = -self.velocity[0]
@@ -91,16 +101,24 @@ class Pong:
                 self.score_text = self.canvas.font.render(f"Score: {self.score}", True, self.WHITE)
     
     def boundary_detection(self):
-        if(self.ball.top < 0 or self.ball.bottom > self.HEIGHT):
+        """Handle ball bouncing off walls."""
+        if(self.ball.top < 0):
             self.velocity[1] = -self.velocity[1]
-        if(self.ball.left < 0 or self.ball.right > self.WIDTH):
+            self.ball.top = 0
+        if(self.ball.bottom > self.HEIGHT):
+            self.velocity[1] = -self.velocity[1]
+            self.ball.bottom = self.HEIGHT
+        if(self.ball.right > self.WIDTH):
             self.velocity[0] = -self.velocity[0]
+            self.ball.right = self.WIDTH
     
     def update(self):
+        """Update ball position."""
         self.ball.x += self.velocity[0]
         self.ball.y += self.velocity[1]
 
     def draw(self):
+        """Render game objects to screen."""
         #Clears, Draws objects, then updates display
         self.canvas.screen.fill(self.BLACK)
         self.canvas.screen.blit(self.score_text,(self.canvas.WIDTH/2 , 10))
@@ -112,6 +130,7 @@ class Pong:
         pygame.display.flip()
 
     def game_loop(self):
+        """Main game loop."""
         self.running = True
         while self.running:
             if(self.drawn):

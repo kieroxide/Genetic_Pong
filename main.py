@@ -1,16 +1,18 @@
+"""Main genetic algorithm implementation for evolving Pong-playing neural networks."""
+
 from Pong import Pong
 from NeuralNet import NeuralNet
-import numpy as np
 import random
 import multiprocessing
 
-MUTATION_RATE = 0.3
-NEURON_SIZE = 16
-SCORE_WEIGHT = 20
+MUTATION_RATE = 0.1
+NEURON_SIZE = 60
+SCORE_WEIGHT = 10
 MAX_FRAMES = 500
 
 def main():
-    MAX_GENERATIONS = 10
+    """Run genetic algorithm and display best performers."""
+    MAX_GENERATIONS = 100
     POP_SIZE = 1000
     PARENT_SIZE = round(POP_SIZE * 0.1)
 
@@ -26,6 +28,7 @@ def main():
         pong.start()
 
 def simulate_generations(MAX_GENERATIONS, POP_SIZE, PARENT_SIZE, population):
+    """Evolve population over multiple generations."""
     best_performers_per_gen = []
     for gen in range(MAX_GENERATIONS):
         print(f"Generation: {gen}")
@@ -41,6 +44,7 @@ def simulate_generations(MAX_GENERATIONS, POP_SIZE, PARENT_SIZE, population):
     return best_performers_per_gen
 
 def repopulate(POP_SIZE, parents):
+    """Create new generation through crossover and mutation."""
     children = []
     while len(children) < POP_SIZE - len(parents):
         p1, p2 = random.sample(parents, 2)
@@ -50,6 +54,7 @@ def repopulate(POP_SIZE, parents):
     return children
 
 def rank_generation(population, PARENT_SIZE):
+    """Evaluate and rank population by fitness."""
     with multiprocessing.Pool() as pool:
         population = pool.map(evaluate_net, population)
     selectBest(population)
@@ -57,12 +62,14 @@ def rank_generation(population, PARENT_SIZE):
     return parents
 
 def evaluate_net(net):
+    """Evaluate neural network fitness by playing Pong."""
     pong = Pong(drawn=False, net=net, maxFrames=MAX_FRAMES)
     frames, score = pong.start()
     net.fitness = score*SCORE_WEIGHT + frames
     return net
 
 def selectBest(population):
+    """Sort population by fitness (highest first)."""
     population.sort(key=lambda net: net.fitness, reverse=True)
 
 if __name__ == '__main__':

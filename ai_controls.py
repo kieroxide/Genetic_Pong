@@ -1,7 +1,9 @@
+"""AI control system for Pong paddle."""
+
 import numpy as np
-from NeuralNet import NeuralNet
 
 def ai_controls(pong, net):
+    """Control paddle using neural network output."""
     #normalized inputs
     inputs = np.array([
         pong.ball.centerx / pong.WIDTH,

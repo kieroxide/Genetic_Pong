@@ -1,7 +1,13 @@
+"""Pygame display management."""
+from os import environ
+environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
 import pygame
 
 class Canvas:
+    """Handles pygame initialization and display setup."""
+
     def __init__(self, width = 800, height = 600, drawn = True):
+        """Initialize canvas with specified dimensions."""
         self.WIDTH = width
         self.HEIGHT = height
 
@@ -14,6 +20,7 @@ class Canvas:
         self.init()
     
     def init(self):
+        """Setup pygame components."""
         pygame.init()
         pygame.display.set_caption("Pong GA")
         pygame.font.init()
