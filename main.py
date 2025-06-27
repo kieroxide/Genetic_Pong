@@ -4,9 +4,8 @@ import numpy as np
 import random
 import multiprocessing
 
-
 MUTATION_RATE = 0.3
-NEURON_SIZE = 8
+NEURON_SIZE = 16
 SCORE_WEIGHT = 20
 MAX_FRAMES = 500
 
