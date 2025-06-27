@@ -1,7 +1,7 @@
 import numpy as np
 from NeuralNet import NeuralNet
 
-def GA(pong, net):
+def ai_controls(pong, net):
     #normalized inputs
     inputs = np.array([
         [pong.ball.centerx / pong.WIDTH],

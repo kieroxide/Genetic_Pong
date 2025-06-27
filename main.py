@@ -45,8 +45,8 @@ def repopulate(POP_SIZE, parents):
     children = []
     while len(children) < POP_SIZE - len(parents):
         p1, p2 = random.sample(parents, 2)
-        child = crossover(p1, p2)
-        mutate(child)
+        child = p1.crossover(p2)
+        child.mutate()
         children.append(child)
     return children
 
@@ -62,19 +62,6 @@ def evaluate_net(net):
     frames, score = pong.start()
     net.fitness = score*SCORE_WEIGHT + frames
     return net
-
-def crossover(parent1, parent2):
-    child = NeuralNet(parent1.w1.shape[1], parent1.w1.shape[0], parent1.w2.shape[0])
-
-    # Average weights
-    child.w1 = (parent1.w1 + parent2.w1) / 2
-    child.w2 = (parent1.w2 + parent2.w2) / 2
-
-    return child
-
-def mutate(net, mutation_rate=MUTATION_RATE):
-    net.w1 += np.random.randn(*net.w1.shape) * mutation_rate
-    net.w2 += np.random.randn(*net.w2.shape) * mutation_rate
 
 def selectBest(population):
     population.sort(key=lambda net: net.fitness, reverse=True)

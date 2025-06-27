@@ -102,7 +102,7 @@ class Pong:
         while self.running:
             if(self.drawn):
                 self.quitCheck()
-            GA(self, self.net)
+            ai_controls(self, self.net)
             #self.controlsCheck()
 
             self.boundary_detection()
